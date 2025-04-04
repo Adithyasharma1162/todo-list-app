@@ -71,4 +71,3 @@ todo-list-app/
 - **Backend**: Node.js, Express.js, MongoDB, Mongoose for ODM.
 - **Authentication**: JSON Web Tokens (JWT), bcrypt for password hashing.
 - **Cloud Services**: AWS (for hosting), MongoDB Atlas (for database).
-
