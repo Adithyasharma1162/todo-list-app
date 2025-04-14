@@ -18,20 +18,38 @@ const TaskSchema = new mongoose.Schema({
 });
 const Task = mongoose.model('Task', TaskSchema);
 
-app.get('/api/tasks', async (req, res) => {
-  const tasks = await Task.find();
-  res.json(tasks);
+app.get('/api/tasks', async (req, res, next) => {
+  try {
+    const tasks = await Task.find();
+    res.json(tasks);
+  } catch (error) {
+    next(error);
+  }
 });
 
-app.post('/api/tasks', async (req, res) => {
-  const newTask = new Task(req.body);
-  await newTask.save();
-  res.json(newTask);
+app.post('/api/tasks', async (req, res, next) => {
+  try {
+    const newTask = new Task(req.body);
+    await newTask.save();
+    res.json(newTask);
+  } catch (error) {
+    next(error);
+  }
 });
 
-app.delete('/api/tasks/:id', async (req, res) => {
-  await Task.findByIdAndDelete(req.params.id);
-  res.sendStatus(204);
+app.delete('/api/tasks/:id', async (req, res, next) => {
+  try {
+    await Task.findByIdAndDelete(req.params.id);
+    res.sendStatus(204);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send({ error: 'Something went wrong!' });
 });
 
 const PORT = process.env.PORT || 5000;
